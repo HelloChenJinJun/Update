@@ -1,5 +1,5 @@
 ext {
-    isAlone = true;//false:作为Lib组件存在， true:作为application存在
+    isAlone = false;//false:作为Lib组件存在， true:作为application存在
 
     android = [
 
@@ -16,11 +16,9 @@ ext {
     libsVersion = [
             // App dependencies version
             supportLibraryVersion = "25.0.0",
-
             retrofitVersion = "2.1.0",
             glideVersion = "4.8.0",
             loggerVersion = "1.15",
-//            eventbusVersion = "3.0.0",
             gsonVersion = "2.8.0",
             butterknife = "8.8.0",
             retrofit = "2.3.0",

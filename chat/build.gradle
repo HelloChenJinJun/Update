@@ -1,0 +1,274 @@
+if (rootProject.ext.isAlone) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+//    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/rxjava.PROPERTIES'
+        exclude 'META-INF/RXJAVA.properties'
+        exclude 'META-INF/RXJAVA.PROPERTIES'
+        exclude 'META-INF/rxjava'
+        exclude 'META-INF/RXJAVA'
+        exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.xml'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.properties'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
+
+    aaptOptions {
+        cruncherEnabled = false
+//        useNewCruncher = false
+    }
+    defaultConfig {
+
+        if (rootProject.ext.isAlone) {
+            applicationId "com.example.chat"
+        }
+
+        multiDexEnabled true
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a'//, 'x86', 'x86_64', 'arm64-v8a'
+        }
+
+
+    }
+
+
+    if(rootProject.ext.isAlone){
+        signingConfigs {
+            config {
+                keyAlias 'chat'
+                keyPassword '3929249'
+                storeFile file('chat.jks')
+                storePassword '3929249'
+            }
+        }
+    }
+
+
+    buildTypes {
+        if(rootProject.ext.isAlone){
+            release {
+                signingConfig signingConfigs.config
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+            debug {
+                signingConfig signingConfigs.config
+            }
+        }else{
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+
+            debug {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+
+
+
+
+
+
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+
+
+        main {
+            if (rootProject.ext.isAlone) {
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java', 'src/main/module/java']
+                res.srcDirs = ['src/main/res', 'src/main/module/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+            jniLibs.srcDirs = ['libs']
+
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation project(':commonlibrary')
+    //        implementation ('cn.bmob.android:bmob-sdk:3.5.8')
+    //        implementation ('cn.bmob.android:bmob-push:1.0.1')
+//    implementation ('com.android.support.constraint:constraint-layout:2.0.0-alpha1'){
+//        exclude module: "support-v4"
+//        exclude module: "support-compat"
+//        exclude module: 'rxjava'
+//        exclude module: 'retrofit'
+//        exclude module: 'appcompat-v7'
+//        exclude module: 'support-v4'
+//        exclude module: 'support-annotations'
+//        exclude module: 'support-core-utils'
+//        exclude module: 'support-media-compat'
+//        exclude module: 'support-vector-drawable'
+//        exclude module: 'support-fragment'
+//        exclude module: 'multidex'
+//        exclude module: 'rxandroid'
+//        exclude module: 'gson'
+//        exclude module: 'okio'
+//        exclude module: 'recyclerview-v7'
+//    }
+    implementation('com.zhy:okhttputils:2.6.2') {
+        exclude module: "support-v4"
+        exclude module: "support-compat"
+        exclude module: 'rxjava'
+        exclude module: 'retrofit'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'support-core-utils'
+        exclude module: 'support-media-compat'
+        exclude module: 'support-vector-drawable'
+        exclude module: 'support-fragment'
+        exclude module: 'multidex'
+        exclude module: 'rxandroid'
+        exclude module: 'gson'
+        exclude module: 'okio'
+
+    }
+    implementation('com.github.chrisbanes.photoview:library:1.2.4') {
+        exclude module: "support-v4"
+        exclude module: "support-compat"
+        exclude module: 'rxjava'
+        exclude module: 'retrofit'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'support-core-utils'
+        exclude module: 'support-media-compat'
+        exclude module: 'support-vector-drawable'
+        exclude module: 'support-fragment'
+        exclude module: 'multidex'
+        exclude module: 'rxandroid'
+        exclude module: 'gson'
+        exclude module: 'okio'
+
+    }
+    implementation('com.komi.slider:slider:0.4.0') {
+        exclude module: "support-v4"
+        exclude module: "support-compat"
+        exclude module: 'rxjava'
+        exclude module: 'retrofit'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'support-core-utils'
+        exclude module: 'support-media-compat'
+        exclude module: 'support-vector-drawable'
+        exclude module: 'support-fragment'
+        exclude module: 'multidex'
+        exclude module: 'rxandroid'
+        exclude module: 'gson'
+        exclude module: 'okio'
+
+    }
+//    implementation('com.mabeijianxi:small-video-record:1.2.0') {
+//        exclude module: "support-v4"
+//        exclude module: "support-compat"
+//        exclude module: 'rxjava'
+//        exclude module: 'retrofit'
+//        exclude module: 'appcompat-v7'
+//        exclude module: 'support-v4'
+//        exclude module: 'support-annotations'
+//        exclude module: 'support-core-utils'
+//        exclude module: 'support-media-compat'
+//        exclude module: 'support-vector-drawable'
+//        exclude module: 'support-fragment'
+//        exclude module: 'multidex'
+//        exclude module: 'rxandroid'
+//        exclude module: 'gson'
+//        exclude module: 'okio'
+//
+//    }
+//    implementation('com.github.chihane:JDAddressSelector:1.1.4') {
+//        exclude module: "support-v4"
+//        exclude module: "support-compat"
+//        exclude module: 'rxjava'
+//        exclude module: 'retrofit'
+//        exclude module: 'appcompat-v7'
+//        exclude module: 'support-v4'
+//        exclude module: 'support-annotations'
+//        exclude module: 'support-core-utils'
+//        exclude module: 'support-media-compat'
+//        exclude module: 'support-vector-drawable'
+//        exclude module: 'support-fragment'
+//        exclude module: 'multidex'
+//        exclude module: 'rxandroid'
+//        exclude module: 'gson'
+//        exclude module: 'okio'
+//
+//    }
+    //    implementation 'com.android.support:multidex:1.0.1'
+    implementation(rootProject.ext.dependencies.cardview) {
+        exclude module: "support-v4"
+        exclude module: "support-compat"
+        exclude module: 'rxjava'
+        exclude module: 'retrofit'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'support-core-utils'
+        exclude module: 'support-media-compat'
+        exclude module: 'support-vector-drawable'
+        exclude module: 'support-fragment'
+        exclude module: 'multidex'
+        exclude module: 'rxandroid'
+        exclude module: 'gson'
+        exclude module: 'okio'
+
+    }
+    annotationProcessor rootProject.ext.dependencies.dagger2_compiler
+
+    testImplementation 'junit:junit:4.12'
+    //    implementation files('libs/pldroid-player-1.5.0.jar')
+    implementation 'cn.jzvd:jiaozivideoplayer:6.2.4'
+    implementation files('libs/AMap3DMap_4.1.3_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar')
+
+    api files('libs/rxandroid-1.2.0.jar')
+    api files('libs/rxjava-1.1.6.jar')
+    api files('libs/BmobSDK_3.5.8_20171013.jar')
+    api files('libs/Bmob_Push_1.0.1_20170907.jar')
+}
+
+

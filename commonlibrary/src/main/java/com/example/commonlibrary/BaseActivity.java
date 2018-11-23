@@ -80,9 +80,6 @@ public abstract class BaseActivity<T, P extends BasePresenter> extends RxAppComp
     }
 
 
-
-
-
     public AppComponent getAppComponent() {
         return BaseApplication.getAppComponent();
     }
@@ -424,4 +421,7 @@ public abstract class BaseActivity<T, P extends BasePresenter> extends RxAppComp
         }
         UMGameAgent.onPause(this);
     }
+
+
+
 }

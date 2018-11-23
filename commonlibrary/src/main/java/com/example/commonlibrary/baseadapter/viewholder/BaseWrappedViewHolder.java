@@ -64,15 +64,12 @@ public class BaseWrappedViewHolder extends RecyclerView.ViewHolder {
 
 
     public BaseWrappedViewHolder setOnItemClickListener(final View.OnClickListener listener) {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(v);
-                }
-                if (adapter.getOnItemClickListener() != null) {
-                    adapter.getOnItemClickListener().onItemClick(getAdapterPosition() - adapter.getItemUpCount(), v);
-                }
+        itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(v);
+            }
+            if (adapter.getOnItemClickListener() != null) {
+                adapter.getOnItemClickListener().onItemClick(getAdapterPosition() - adapter.getItemUpCount(), v);
             }
         });
         return this;
@@ -80,12 +77,9 @@ public class BaseWrappedViewHolder extends RecyclerView.ViewHolder {
 
 
     public BaseWrappedViewHolder setOnItemClickListener() {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adapter.getOnItemClickListener() != null) {
-                    adapter.getOnItemClickListener().onItemClick(getAdapterPosition() - adapter.getItemUpCount(), v);
-                }
+        itemView.setOnClickListener(v -> {
+            if (adapter.getOnItemClickListener() != null) {
+                adapter.getOnItemClickListener().onItemClick(getAdapterPosition() - adapter.getItemUpCount(), v);
             }
         });
         return this;
@@ -94,12 +88,9 @@ public class BaseWrappedViewHolder extends RecyclerView.ViewHolder {
 
     public BaseWrappedViewHolder setOnItemChildClickListener(int id) {
         if (getView(id) != null) {
-            getView(id).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (adapter.getOnItemClickListener() != null) {
-                        adapter.getOnItemClickListener().onItemChildClick(getAdapterPosition() - adapter.getItemUpCount(), v, v.getId());
-                    }
+            getView(id).setOnClickListener(v -> {
+                if (adapter.getOnItemClickListener() != null) {
+                    adapter.getOnItemClickListener().onItemChildClick(getAdapterPosition() - adapter.getItemUpCount(), v, v.getId());
                 }
             });
         }

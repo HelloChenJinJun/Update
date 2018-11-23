@@ -60,12 +60,12 @@ public class BaseApplication extends Application implements View.OnClickListener
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         initDagger();
         initFont();
         initUM();
         initScreenAdapt();
         initBugly();
-        instance = this;
         applicationDelegate.onCreate(this);
     }
 
