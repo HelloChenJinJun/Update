@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.example.commonlibrary.BaseApplication;
-import com.example.commonlibrary.router.RouterRequest;
 import com.example.commonlibrary.utils.CommonLogger;
 import com.example.commonlibrary.utils.Constant;
 

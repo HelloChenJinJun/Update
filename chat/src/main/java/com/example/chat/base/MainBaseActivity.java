@@ -2,7 +2,6 @@ package com.example.chat.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,11 +11,11 @@ import com.example.chat.dagger.ChatMainComponent;
 import com.example.chat.listener.OnEditDataCompletedListener;
 import com.example.chat.manager.UserManager;
 import com.example.chat.mvp.login.LoginActivity;
+import com.example.chat.util.ConstantUtil;
 import com.example.chat.util.LogUtil;
 import com.example.commonlibrary.BaseActivity;
 import com.example.commonlibrary.BaseApplication;
 import com.example.commonlibrary.mvp.presenter.BasePresenter;
-import com.example.commonlibrary.utils.ConstantUtil;
 import com.example.commonlibrary.utils.ToastUtils;
 
 import java.util.ArrayList;

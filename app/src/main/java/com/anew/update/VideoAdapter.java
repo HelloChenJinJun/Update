@@ -30,10 +30,8 @@ public class VideoAdapter extends BaseRecyclerAdapter<VideoBean, BaseWrappedView
 
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull BaseWrappedViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
+    public void onViewRecycled(BaseWrappedViewHolder holder) {
+        super.onViewRecycled(holder);
         ((DefaultVideoPlayer) holder.getView(R.id.dvp_item_activity_video_list_display)).release();
     }
-
-
 }

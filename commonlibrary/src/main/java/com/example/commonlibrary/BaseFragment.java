@@ -305,7 +305,7 @@ public abstract class BaseFragment<T, P extends BasePresenter> extends RxFragmen
         }
         if (option.getAvatar() != null) {
             icon.setVisibility(View.VISIBLE);
-            Glide.with(this).load(option.getAvatar()).into(icon);
+//            Glide.with(BaseApplication.getInstance()).load(option.getAvatar()).into(icon);
         } else {
             icon.setVisibility(GONE);
         }

@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.example.commonlibrary.BaseApplication;
+import com.example.commonlibrary.utils.AppUtil;
 import com.example.commonlibrary.utils.CommonLogger;
 import com.example.commonlibrary.utils.Constant;
 import com.example.commonlibrary.utils.DensityUtil;
@@ -125,6 +126,7 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
             initMediaPlayer();
             initAudioManager();
             initTextureView();
+            ListVideoManager.getInstance().setCurrentPlayer(this);
         } else if (getCurrentState() == PLAY_STATE_PAUSE) {
             mState = PLAY_STATE_PLAYING;
             innerStart(mMediaPlayer.getCurrentPosition());
@@ -278,6 +280,14 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
                 appCompatActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 contentView.addView(container, layoutParams);
             } else if (mWindowState == WINDOW_STATE_LIST) {
+                AppCompatActivity appCompatActivity = ((AppCompatActivity) getContext());
+                appCompatActivity.getWindow()
+                        .clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                ActionBar ab = appCompatActivity.getSupportActionBar();
+                if (ab != null) {
+                    ab.show();
+                }
+                appCompatActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 addView(container, layoutParams);
             } else if (mWindowState == WINDOW_STATE_TINY) {
                 layoutParams.width = (int) (DensityUtil.getScreenWidth(getContext()) * 0.6f);
@@ -294,25 +304,23 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
 
     @Override
     public void reset() {
-        BaseApplication.getAppComponent()
-                .getSharedPreferences().edit().putLong(url, (mState == PLAY_STATE_FINISH || mState == PLAY_STATE_ERROR) ? 0 : mMediaPlayer.getCurrentPosition()).apply();
-        mMediaPlayer.reset();
+        if (mMediaPlayer != null) {
+            BaseApplication.getAppComponent()
+                    .getSharedPreferences().edit().putLong(url, (mState == PLAY_STATE_FINISH || mState == PLAY_STATE_ERROR) ? 0 : mMediaPlayer.getCurrentPosition()).apply();
+            mMediaPlayer.reset();
+        }
         mState = PLAY_STATE_IDLE;
         mVideoController.onPlayStateChanged(mState);
     }
 
     @Override
     public void release() {
-        if (mMediaPlayer != null) {
-            BaseApplication.getAppComponent()
-                    .getSharedPreferences().edit().putLong(url, (mState == PLAY_STATE_FINISH || mState == PLAY_STATE_ERROR) ? 0 : mMediaPlayer.getCurrentPosition()).apply();
-            mMediaPlayer.reset();
-        }
+        reset();
         if (mSurfaceTexture != null) {
             mSurfaceTexture.release();
             mSurfaceTexture = null;
-
         }
+        container.removeView(defaultTextureView);
     }
 
     @Override
@@ -342,10 +350,15 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
     private void prepareAsync() {
         container.setKeepScreenOn(true);
         try {
-            mMediaPlayer.setDataSource(getContext(), Uri.parse(url), headers);
-            mMediaPlayer.prepareAsync();
             mState = PLAY_STATE_PREPARING;
             mVideoController.onPlayStateChanged(mState);
+            if (AppUtil.isNetworkAvailable()) {
+                mMediaPlayer.setDataSource(getContext(), Uri.parse(url), headers);
+                mMediaPlayer.prepareAsync();
+            } else {
+                mState = PLAY_STATE_ERROR;
+                mVideoController.onPlayStateChanged(mState);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -359,7 +372,7 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
+        return mSurfaceTexture == null;
     }
 
     @Override
@@ -425,11 +438,9 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         // 直播流播放时去调用mediaPlayer.getDuration会导致-38和-2147483648错误，忽略该错误
-        if (what != -38 && what != -2147483648 && extra != -38 && extra != -2147483648) {
-            mState = PLAY_STATE_ERROR;
-            mVideoController.onPlayStateChanged(mState);
-            CommonLogger.e("视频播放出错 ———— what：" + what + ", extra: " + extra);
-        }
+        mState = PLAY_STATE_ERROR;
+        mVideoController.onPlayStateChanged(mState);
+        CommonLogger.e("视频播放出错 ———— what：" + what + ", extra: " + extra);
         return true;
     }
 

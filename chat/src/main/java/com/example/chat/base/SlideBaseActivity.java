@@ -2,7 +2,6 @@ package com.example.chat.base;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.example.chat.R;
 import com.example.commonlibrary.mvp.presenter.BasePresenter;
@@ -10,6 +9,8 @@ import com.komi.slider.ISlider;
 import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderUtils;
 import com.komi.slider.position.SliderPosition;
+
+import androidx.annotation.Nullable;
 
 
 /**

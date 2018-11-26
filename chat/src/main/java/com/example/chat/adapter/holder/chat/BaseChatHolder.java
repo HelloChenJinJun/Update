@@ -3,13 +3,10 @@ package com.example.chat.adapter.holder.chat;
 import android.view.View;
 
 import com.example.chat.R;
-import com.example.chat.adapter.ChatMessageAdapter;
 import com.example.chat.base.Constant;
 import com.example.chat.bean.BaseMessage;
-import com.example.chat.bean.ChatMessage;
 import com.example.chat.manager.UserDBManager;
 import com.example.chat.manager.UserManager;
-import com.example.chat.util.FaceTextUtil;
 import com.example.chat.util.TimeUtil;
 import com.example.commonlibrary.baseadapter.viewholder.BaseWrappedViewHolder;
 import com.example.commonlibrary.bean.chat.UserEntity;

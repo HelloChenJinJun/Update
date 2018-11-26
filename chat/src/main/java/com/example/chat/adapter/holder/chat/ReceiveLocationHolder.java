@@ -4,13 +4,8 @@ import android.view.View;
 import android.view.ViewStub;
 
 import com.example.chat.R;
-import com.example.chat.adapter.ChatMessageAdapter;
-import com.example.chat.adapter.holder.chat.BaseChatHolder;
 import com.example.chat.bean.BaseMessage;
-import com.example.chat.bean.ChatMessage;
 import com.example.chat.bean.MessageContent;
-import com.example.chat.util.LogUtil;
-import com.example.chat.util.TimeUtil;
 import com.example.commonlibrary.BaseApplication;
 import com.example.commonlibrary.bean.chat.UserEntity;
 

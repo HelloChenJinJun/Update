@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -51,10 +49,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+
+import static androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags;
 
 /**
  * 项目名称:    NewFastFrame

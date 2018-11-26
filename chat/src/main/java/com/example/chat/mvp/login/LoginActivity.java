@@ -19,24 +19,16 @@ import com.example.chat.bean.User;
 import com.example.chat.dagger.login.DaggerLoginComponent;
 import com.example.chat.dagger.login.LoginModule;
 import com.example.chat.manager.UserManager;
-import com.example.chat.mvp.editInfo.EditUserInfoActivity;
 import com.example.chat.mvp.main.HomeActivity;
 import com.example.chat.mvp.register.RegisterActivity;
-import com.example.chat.util.CommonUtils;
+import com.example.chat.util.ConstantUtil;
 import com.example.chat.util.LogUtil;
 import com.example.chat.view.AutoEditText;
 import com.example.commonlibrary.BaseActivity;
 import com.example.commonlibrary.BaseApplication;
-import com.example.commonlibrary.router.Router;
-import com.example.commonlibrary.router.RouterRequest;
 import com.example.commonlibrary.rxbus.RxBusManager;
-import com.example.commonlibrary.rxbus.event.LoginEvent;
 import com.example.commonlibrary.utils.AppUtil;
-import com.example.commonlibrary.utils.ConstantUtil;
 import com.example.commonlibrary.utils.ToastUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -163,33 +155,12 @@ public class LoginActivity extends BaseActivity<Object, LoginPresenter> implemen
 //                    , passWord.getText().toString().trim(),null);
 //        }
         presenter.login(userName.getText().toString().trim()
-                , passWord.getText().toString().trim(),null);
+                , passWord.getText().toString().trim());
     }
 
 
     private void dealResultInfo(User user,boolean isFirstLogin) {
         if (from!=null) {
-            Map<String, Object> map = new HashMap<>();
-            map.put(ConstantUtil.AVATAR, user.getAvatar());
-            map.put(ConstantUtil.SIGNATURE, user.getSignature());
-            map.put(ConstantUtil.NICK, user.getNick());
-            map.put(ConstantUtil.ACCOUNT, user.getUsername());
-            map.put(ConstantUtil.NAME, user.getName());
-            map.put(ConstantUtil.SEX, user.isSex());
-            map.put(ConstantUtil.BG_HALF, user.getTitleWallPaper());
-            map.put(ConstantUtil.BG_ALL, user.getWallPaper());
-            map.put(ConstantUtil.CLASS_NUMBER,user.getClassNumber());
-            map.put(ConstantUtil.SCHOOL,user.getSchool());
-            map.put(ConstantUtil.MAJOR,user.getMajor());
-            map.put(ConstantUtil.YEAR,user.getYear());
-            map.put(ConstantUtil.STUDENT_TYPE, user.getEducation());
-            map.put(ConstantUtil.COLLEGE, user.getCollege());
-            map.put(ConstantUtil.YEAR,user.getYear());
-            map.put(ConstantUtil.PASSWORD,user.getPw());
-            map.put(ConstantUtil.FROM, from);
-            Router.getInstance().deal(new RouterRequest.Builder()
-                    .paramMap(map).context(this).provideName("app")
-                    .actionName("person").isFinish(true).build());
         }else {
             HomeActivity.start(this,isFirstLogin);
             finish();

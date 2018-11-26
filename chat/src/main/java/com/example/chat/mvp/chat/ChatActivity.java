@@ -9,10 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
@@ -57,6 +53,7 @@ import com.example.chat.mvp.map.MapActivity;
 import com.example.chat.mvp.photoSelect.PhotoSelectActivity;
 import com.example.chat.mvp.preview.PhotoPreViewActivity;
 import com.example.chat.util.CommonUtils;
+import com.example.chat.util.ConstantUtil;
 import com.example.chat.util.FaceTextUtil;
 import com.example.chat.util.FileUtil;
 import com.example.chat.util.LogUtil;
@@ -70,13 +67,9 @@ import com.example.commonlibrary.baseadapter.manager.WrappedGridLayoutManager;
 import com.example.commonlibrary.baseadapter.manager.WrappedLinearLayoutManager;
 import com.example.commonlibrary.bean.chat.GroupTableEntity;
 import com.example.commonlibrary.bean.chat.UserEntity;
-import com.example.commonlibrary.cusotomview.BaseDialog;
 import com.example.commonlibrary.cusotomview.ToolBarOption;
-import com.example.commonlibrary.imageloader.glide.GlideImageLoaderConfig;
 import com.example.commonlibrary.rxbus.RxBusManager;
-import com.example.commonlibrary.utils.ConstantUtil;
 import com.example.commonlibrary.utils.DensityUtil;
-import com.example.commonlibrary.utils.PermissionPageUtils;
 import com.example.commonlibrary.utils.PermissionUtil;
 import com.example.commonlibrary.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -87,6 +80,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 import cn.jzvd.JZMediaManager;
 import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
@@ -800,11 +797,11 @@ public class ChatActivity extends SlideBaseActivity<BaseMessage, ChatPresenter> 
                     public void onRequestPermissionFailure() {
                         ToastUtils.showShortToast("需要授予录音权限才能录音");
 
-                        showBaseDialog("权限界面操作", "是否需要打开权限界面", "取消", "确定"
-                                , v12 -> cancelBaseDialog(), v1 -> {
-                                    dismissBaseDialog();
-                                   PermissionPageUtils.jumpPermissionPage(ChatActivity.this);
-                                });
+//                        showBaseDialog("权限界面操作", "是否需要打开权限界面", "取消", "确定"
+//                                , v12 -> cancelBaseDialog(), v1 -> {
+//                                    dismissBaseDialog();
+//                                   PermissionPageUtils.jumpPermissionPage(ChatActivity.this);
+//                                });
                     }
                 },new RxPermissions(this), Manifest.permission.RECORD_AUDIO,Manifest.permission
                 .WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);

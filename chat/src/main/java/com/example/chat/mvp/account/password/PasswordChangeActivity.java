@@ -11,10 +11,8 @@ import com.example.chat.R;
 import com.example.chat.base.SlideBaseActivity;
 import com.example.chat.dagger.account.password.DaggerPasswordChangeComponent;
 import com.example.chat.dagger.account.password.PasswordChangeModule;
-import com.example.chat.util.CommonUtils;
 import com.example.chat.view.AutoEditText;
 import com.example.commonlibrary.cusotomview.ToolBarOption;
-import com.example.commonlibrary.rxbus.event.PwChangeEvent;
 import com.example.commonlibrary.utils.AppUtil;
 import com.example.commonlibrary.utils.ToastUtils;
 
@@ -37,10 +35,10 @@ public class PasswordChangeActivity extends SlideBaseActivity<Object,PasswordCha
 
     @Override
     public void updateData(Object o) {
-        if (o != null && o instanceof PwChangeEvent) {
-            ToastUtils.showShortToast("最终密码修改成功");
-            finish();
-        }
+//        if (o != null && o instanceof PwChangeEvent) {
+//            ToastUtils.showShortToast("最终密码修改成功");
+//            finish();
+//        }
     }
 
     @Override
@@ -60,10 +58,10 @@ public class PasswordChangeActivity extends SlideBaseActivity<Object,PasswordCha
 
     @Override
     protected void initView() {
-        old= (AutoEditText) findViewById(R.id.aet_activity_password_change_old);
-        news= (AutoEditText) findViewById(R.id.aet_activity_password_change_new);
-        Button commit = (Button) findViewById(R.id.btn_activity_password_change_commit);
-        confirm= (AutoEditText) findViewById(R.id.aet_activity_password_change_confirm);
+        old= findViewById(R.id.aet_activity_password_change_old);
+        news= findViewById(R.id.aet_activity_password_change_new);
+        Button commit = findViewById(R.id.btn_activity_password_change_commit);
+        confirm= findViewById(R.id.aet_activity_password_change_confirm);
         commit.setOnClickListener(this);
     }
 

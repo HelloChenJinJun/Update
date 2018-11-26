@@ -21,6 +21,7 @@ import com.example.commonlibrary.baseadapter.SuperRecyclerView;
 import com.example.commonlibrary.baseadapter.adapter.BaseRecyclerAdapter;
 import com.example.commonlibrary.baseadapter.listener.OnSimpleItemClickListener;
 import com.example.commonlibrary.baseadapter.viewholder.BaseWrappedViewHolder;
+import com.example.commonlibrary.utils.AppUtil;
 import com.example.commonlibrary.utils.CommonLogger;
 import com.example.commonlibrary.utils.TimeUtil;
 import com.example.commonlibrary.utils.ToastUtils;
@@ -43,9 +44,20 @@ import io.reactivex.disposables.Disposable;
  * 创建时间:    2018/11/22     11:24
  */
 public class DefaultVideoController extends VideoController implements View.OnClickListener {
-    private ImageView back, battery, screen, bottomPlay;
+    private ImageView battery;
+    private ImageView screen;
+    private ImageView bottomPlay;
     private LinearLayout topContainer, bottomContainer, finishContainer, brightContainer, volumeContainer, errorContainer, positionContainer, loadingContainer;
-    private TextView title, batteryTime, loading, middlePosition, startTime, endTime, endTimeRight, clarity, restart, share, timeDelta;
+    private TextView title;
+    private TextView batteryTime;
+    private TextView loading;
+    private TextView middlePosition;
+    private TextView startTime;
+    private TextView endTime;
+    private TextView endTimeRight;
+    private TextView clarity;
+    private TextView timeDelta;
+    private TextView retry;
     private ProgressBar brightProgress, volumeProgress, positionProgress;
     private SeekBar bottomSeek;
     private ImageView middlePlay;
@@ -54,6 +66,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
     private SuperRecyclerView clarityDisplay;
     private BroadcastReceiver batteryBroadcastReceiver;
     private ImageView bg;
+    private ImageView back;
 
     public DefaultVideoController(@NonNull Context context) {
         super(context);
@@ -99,9 +112,9 @@ public class DefaultVideoController extends VideoController implements View.OnCl
 
     private void initDefaultView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_video_control, this, true);
-        view.setOnClickListener(v -> {
-            topIn();
-            bottomIn();
+        setOnClickListener(v -> {
+            dealTop();
+            dealBottom();
         });
         bg = view.findViewById(R.id.iv_view_video_control_bg);
         timeDelta = view.findViewById(R.id.tv_view_video_control_time_delta);
@@ -114,6 +127,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         brightContainer = view.findViewById(R.id.ll_view_video_control_brightness);
         volumeContainer = view.findViewById(R.id.ll_view_video_control_volume);
         errorContainer = view.findViewById(R.id.ll_view_video_control_error);
+        retry = view.findViewById(R.id.tv_view_video_control_error_retry);
         positionContainer = view.findViewById(R.id.ll_view_video_control_position);
         loadingContainer = view.findViewById(R.id.ll_view_video_control_loading);
         title = view.findViewById(R.id.tv_view_video_control_top_title);
@@ -124,8 +138,8 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         endTime = view.findViewById(R.id.tv_view_video_control_bottom_end);
         endTimeRight = view.findViewById(R.id.tv_view_video_control_bottom_end_right);
         clarity = view.findViewById(R.id.tv_view_video_control_bottom_clarity);
-        restart = view.findViewById(R.id.ll_view_video_control_restart);
-        share = view.findViewById(R.id.ll_view_video_control_share);
+        TextView restart = view.findViewById(R.id.ll_view_video_control_restart);
+        TextView share = view.findViewById(R.id.ll_view_video_control_share);
         brightProgress = view.findViewById(R.id.pb_view_video_control_brightness);
         volumeProgress = view.findViewById(R.id.pb_view_video_control_volume);
         positionProgress = view.findViewById(R.id.pb_view_video_control_position_progress);
@@ -136,6 +150,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         clarityDisplay = view.findViewById(R.id.srcv_view_video_control_clarity);
         back.setOnClickListener(this);
         screen.setOnClickListener(this);
+        retry.setOnClickListener(this);
         middlePlay.setOnClickListener(this);
         bottomPlay.setOnClickListener(this);
         clarity.setOnClickListener(this);
@@ -167,6 +182,51 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         });
 
 
+    }
+
+    private void dealBottom() {
+        if (bottomContainer.getTranslationY() == bottomContainer.getHeight()) {
+            bottomIn();
+        } else if (bottomContainer.getTranslationY() == 0) {
+            bottomOut();
+        }
+    }
+
+    private void bottomIn() {
+        if (bottomContainer.getTranslationY() != 0) {
+            ObjectAnimator.ofFloat(bottomContainer, "translationY", bottomContainer.getTranslationY(), 0)
+                    .setDuration(300).start();
+        }
+    }
+
+    private void bottomOut() {
+        if (bottomContainer.getTranslationY() != bottomContainer.getHeight()) {
+            ObjectAnimator.ofFloat(bottomContainer, "translationY", bottomContainer.getTranslationY(), bottomContainer.getHeight())
+                    .setDuration(300).start();
+        }
+    }
+
+
+    private void topIn() {
+        if (topContainer.getTranslationY() != 0) {
+            ObjectAnimator.ofFloat(topContainer, "translationY", topContainer.getTranslationY(), 0).
+                    setDuration(300).start();
+        }
+    }
+
+    private void topOut() {
+        if (topContainer.getTranslationY() != -topContainer.getHeight()) {
+            ObjectAnimator.ofFloat(topContainer, "translationY", topContainer.getTranslationY(), -topContainer.getHeight())
+                    .setDuration(300).start();
+        }
+    }
+
+    private void dealTop() {
+        if (topContainer.getTranslationY() == (-topContainer.getHeight())) {
+            topIn();
+        } else if (topContainer.getTranslationY() == 0) {
+            topOut();
+        }
     }
 
 
@@ -257,6 +317,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             brightContainer.setVisibility(GONE);
             if (batteryBroadcastReceiver != null) {
                 getContext().unregisterReceiver(batteryBroadcastReceiver);
+                batteryBroadcastReceiver = null;
             }
             cancelBatteryTime();
         } else if (windowState == DefaultVideoPlayer.WINDOW_STATE_LIST) {
@@ -265,9 +326,13 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             timeDelta.setVisibility(VISIBLE);
             endTimeRight.setVisibility(GONE);
             clarity.setVisibility(GONE);
+            back.setVisibility(GONE);
             cancelBatteryTime();
+            bottomIn();
+            topIn();
             if (batteryBroadcastReceiver != null) {
                 getContext().unregisterReceiver(batteryBroadcastReceiver);
+                batteryBroadcastReceiver = null;
             }
         } else if (windowState == DefaultVideoPlayer.WINDOW_STATE_FULL) {
             startBatteryTime();
@@ -276,8 +341,9 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             endTime.setVisibility(GONE);
             timeDelta.setVisibility(GONE);
             endTimeRight.setVisibility(VISIBLE);
-            topOut();
+            back.setVisibility(VISIBLE);
             bottomOut();
+            topOut();
             IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
             if (batteryBroadcastReceiver == null) {
                 batteryBroadcastReceiver = new BroadcastReceiver() {
@@ -288,35 +354,6 @@ public class DefaultVideoController extends VideoController implements View.OnCl
                 };
                 getContext().registerReceiver(batteryBroadcastReceiver, intentFilter);
             }
-        }
-    }
-
-
-    private void bottomIn() {
-        if (bottomContainer.getTranslationY() == bottomContainer.getHeight()) {
-            ObjectAnimator.ofFloat(bottomContainer, "translationY", bottomContainer.getHeight(), 0)
-                    .setDuration(300).start();
-        }
-    }
-
-    private void topIn() {
-        if (topContainer.getTranslationY() == topContainer.getHeight()) {
-            ObjectAnimator.ofFloat(topContainer, "translationY", -topContainer.getHeight(), 0).
-                    setDuration(300).start();
-        }
-    }
-
-    private void bottomOut() {
-        if (bottomContainer.getTranslationY() == 0) {
-            ObjectAnimator.ofFloat(bottomContainer, "translationY", 0, bottomContainer.getHeight())
-                    .setDuration(300).start();
-        }
-    }
-
-    private void topOut() {
-        if (topContainer.getTranslationY() == 0) {
-            ObjectAnimator.ofFloat(topContainer, "translationY", 0, -topContainer.getHeight())
-                    .setDuration(300).start();
         }
     }
 
@@ -366,6 +403,8 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        errorContainer.setVisibility(GONE);
+        loadingContainer.setVisibility(GONE);
         bottomContainer.setVisibility(GONE);
         positionContainer.setVisibility(GONE);
         volumeContainer.setVisibility(GONE);
@@ -414,7 +453,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         int id = v.getId();
         if (id == R.id.iv_view_video_control_top_back) {
             if (getContext() instanceof AppCompatActivity) {
-                ((AppCompatActivity) getContext()).finish();
+                ((AppCompatActivity) getContext()).onBackPressed();
             }
         } else if (id == R.id.iv_view_video_control_bottom_screen) {
             if (mIVideoPlayer.getWindowState() == DefaultVideoPlayer.WINDOW_STATE_FULL) {
@@ -442,6 +481,12 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             ToastUtils.showShortToast("分享功能");
         } else if (id == R.id.rl_view_video_control_clarity_container) {
             clarityContainer.setVisibility(GONE);
+        } else if (id == R.id.tv_view_video_control_error_retry) {
+            if (AppUtil.isNetworkAvailable()) {
+                mIVideoPlayer.start();
+            } else {
+                ToastUtils.showShortToast("网络连接失败，请检查网络配置");
+            }
         }
     }
 

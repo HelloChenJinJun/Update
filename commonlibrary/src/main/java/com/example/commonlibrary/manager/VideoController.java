@@ -78,7 +78,7 @@ public abstract class VideoController extends FrameLayout implements View.OnTouc
             case MotionEvent.ACTION_MOVE:
                 float deltaX = Math.abs(x - downX);
                 float deltaY = Math.abs(y - downY);
-                if (!changePosition && !changeBrightness && !changeVolume) {
+                if (!changePosition && !changeBrightness && !changeVolume && downY > getHeight() / 5) {
                     if (deltaY < deltaX && deltaX > threshold) {
                         changePosition = true;
                         changeStartPosition = mIVideoPlayer.getPosition();

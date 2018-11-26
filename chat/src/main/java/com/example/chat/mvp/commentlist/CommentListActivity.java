@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -72,9 +69,6 @@ import com.example.commonlibrary.cusotomview.RoundAngleImageView;
 import com.example.commonlibrary.cusotomview.ToolBarOption;
 import com.example.commonlibrary.cusotomview.WrappedViewPager;
 import com.example.commonlibrary.imageloader.glide.GlideImageLoaderConfig;
-import com.example.commonlibrary.rxbus.RxBusManager;
-import com.example.commonlibrary.utils.CommonLogger;
-import com.example.commonlibrary.utils.CommonUtil;
 import com.example.commonlibrary.utils.DensityUtil;
 import com.example.commonlibrary.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -84,6 +78,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -408,30 +405,30 @@ public class CommentListActivity extends SlideBaseActivity<List<PublicCommentBea
                 List<String> list = new ArrayList<>();
                 list.add("删除");
                 list.add("修改");
-                showChooseDialog("帖子操作", list, (adapterView, view1, i, l) -> {
-                    dismissBaseDialog();
-                    if (i == 0) {
-                        showLoadDialog("删除中....");
-                        presenter.deleteShareInfo(data, new UpdateListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                dismissLoadDialog();
-                                if (e == null) {
-                                    ToastUtils.showShortToast("删除成功");
-                                    CommonLogger.e("删除成功");
-                                    RxBusManager.getInstance().post(new CommentEvent(data.getObjectId(),CommentEvent.TYPE_POST,CommentEvent.ACTION_DELETE));
-                                    finish();
-                                } else {
-                                    ToastUtils.showShortToast("删除失败" + e.toString());
-                                    CommonLogger.e("删除失败" + e.toString());
-                                }
-                            }
-                        });
-                    } else {
-                        EditShareInfoActivity.start(CommentListActivity.this,data.getMsgType(),data,true);
-                        finish();
-                    }
-                });
+//                showChooseDialog("帖子操作", list, (adapterView, view1, i, l) -> {
+//                    dismissBaseDialog();
+//                    if (i == 0) {
+//                        showLoadDialog("删除中....");
+//                        presenter.deleteShareInfo(data, new UpdateListener() {
+//                            @Override
+//                            public void done(BmobException e) {
+//                                dismissLoadDialog();
+//                                if (e == null) {
+//                                    ToastUtils.showShortToast("删除成功");
+//                                    CommonLogger.e("删除成功");
+//                                    RxBusManager.getInstance().post(new CommentEvent(data.getObjectId(),CommentEvent.TYPE_POST,CommentEvent.ACTION_DELETE));
+//                                    finish();
+//                                } else {
+//                                    ToastUtils.showShortToast("删除失败" + e.toString());
+//                                    CommonLogger.e("删除失败" + e.toString());
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        EditShareInfoActivity.start(CommentListActivity.this,data.getMsgType(),data,true);
+//                        finish();
+//                    }
+//                });
             } else {
                 ToastUtils.showShortToast("非帖子作者，不可编辑");
             }

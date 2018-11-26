@@ -2,7 +2,6 @@ package com.example.chat.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

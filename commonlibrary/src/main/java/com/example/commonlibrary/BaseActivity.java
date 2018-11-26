@@ -99,7 +99,7 @@ public abstract class BaseActivity<T, P extends BasePresenter> extends RxAppComp
 
     @Override
     public boolean cancelAdapt() {
-        return false;
+        return true;
     }
 
 

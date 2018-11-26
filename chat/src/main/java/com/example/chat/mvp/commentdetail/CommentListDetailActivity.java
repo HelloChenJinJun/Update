@@ -2,7 +2,6 @@ package com.example.chat.mvp.commentdetail;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.chat.ChatApplication;
@@ -25,6 +24,8 @@ import com.example.commonlibrary.cusotomview.ToolBarOption;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * 项目名称:    NewFastFrame

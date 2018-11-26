@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 /**
  * 项目名称:    TestChat
  * 创建人:        陈锦军
@@ -51,10 +50,10 @@ public class SelectedFriendsActivity extends SlideBaseActivity implements IndexV
 
     @Override
     public void initView() {
-        display = (SuperRecyclerView) findViewById(R.id.srcv_activity_selected_friend_display);
-        indexView = (IndexView) findViewById(R.id.index_activity_selected_friend_index);
-        index = (TextView) findViewById(R.id.tv_activity_selected_friend_index);
-        bottomContainer = (LinearLayout) findViewById(R.id.ll_activity_selected_friend_bottom);
+        display = findViewById(R.id.srcv_activity_selected_friend_display);
+        indexView = findViewById(R.id.index_activity_selected_friend_index);
+        index = findViewById(R.id.tv_activity_selected_friend_index);
+        bottomContainer = findViewById(R.id.ll_activity_selected_friend_bottom);
     }
 
     @Override
@@ -98,39 +97,10 @@ public class SelectedFriendsActivity extends SlideBaseActivity implements IndexV
                 ToastUtils.showShortToast("选择好友不能为空");
                 return;
             }
-
-            if (from.equals(Constant.FROM_CREATE_GROUP)) {
-                List<String> list = new ArrayList<>();
-                list.add("群名");
-                list.add("群介绍");
-                showEditDialog("建群", list, data -> {
-                    List<String> list1 = new ArrayList<>();
-                    list1.addAll(selectedContacts);
-                    list1.add(0, UserManager
-                            .getInstance().getCurrentUserObjectId());
-                    showLoadDialog("正在建群中..........");
-                    MsgManager.getInstance().sendCreateGroupMessage(data
-                            .get(0), data.get(1), list1, (groupTableMessage, e) -> {
-                                dismissLoadDialog();
-                                if (e == null) {
-                                    RxBusManager
-                                            .getInstance()
-                                            .post(new RecentEvent(groupTableMessage.getGroupId()
-                                                    , RecentEvent.ACTION_ADD));
-                                    finish();
-                                } else {
-                                    ToastUtils.showShortToast(e.toString());
-                                }
-                            });
-                });
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(Constant.DATA, selectedContacts);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-
-
+            Intent intent = new Intent();
+            intent.putExtra(Constant.DATA, selectedContacts);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         });
         toolBarOption.setAvatar(null);
         setToolBar(toolBarOption);
@@ -158,10 +128,10 @@ public class SelectedFriendsActivity extends SlideBaseActivity implements IndexV
         int size = adapter.getData().size();
         for (int i = 0; i < size; i++) {
             UserEntity bean = adapter.getData(i);
-            if (AppUtil.getSortedKey(bean.getName()).equals(s)) {
-                mLinearLayoutManager.scrollToPositionWithOffset(i, 0);
-                break;
-            }
+//            if (AppUtil.getSortedKey(bean.getName()).equals(s)) {
+//                mLinearLayoutManager.scrollToPositionWithOffset(i, 0);
+//                break;
+//            }
         }
     }
 

@@ -1,16 +1,13 @@
 package com.anew.update;
 
-import android.media.MediaRecorder;
-
 import com.example.commonlibrary.SlideBaseActivity;
 import com.example.commonlibrary.baseadapter.SuperRecyclerView;
 import com.example.commonlibrary.baseadapter.manager.WrappedLinearLayoutManager;
 import com.example.commonlibrary.cusotomview.ListViewDecoration;
-import com.example.commonlibrary.utils.DensityUtil;
+import com.example.commonlibrary.manager.ListVideoManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 项目名称:    Update
@@ -25,7 +22,7 @@ public class VideoListActivity extends SlideBaseActivity {
 
     @Override
     public boolean cancelAdapt() {
-        return true;
+        return false;
     }
 
     @Override
@@ -111,6 +108,15 @@ public class VideoListActivity extends SlideBaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (!ListVideoManager.getInstance().onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ListVideoManager.getInstance().release();
     }
 }

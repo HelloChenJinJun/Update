@@ -1,7 +1,5 @@
 package com.example.chat.mvp.main.friends;
 
-import android.Manifest;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +38,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 /**
@@ -69,7 +68,7 @@ public class FriendsFragment extends AppBaseFragment<List<UserEntity>, FriendsPr
             tempList.addAll(users);
         }
         if (users != null && users.size() > 1) {
-            Collections.sort(users, (user, t1) -> AppUtil.getSortedKey(user.getName()).compareTo(AppUtil.getSortedKey(t1.getNick())));
+//            Collections.sort(users, (user, t1) -> AppUtil.getSortedKey(user.getName()).compareTo(AppUtil.getSortedKey(t1.getNick())));
         }
         adapter.refreshData(users);
     }
@@ -154,10 +153,10 @@ public class FriendsFragment extends AppBaseFragment<List<UserEntity>, FriendsPr
                 List<UserEntity> list = adapter.getData();
                 int size = list.size();
                 for (int i = 0; i < size; i++) {
-                    if (AppUtil.getSortedKey(user.getName()).compareTo(AppUtil.getSortedKey(list.get(i).getNick())) == 0) {
-                        adapter.addData(i, user);
-                        return;
-                    }
+//                    if (AppUtil.getSortedKey(user.getName()).compareTo(AppUtil.getSortedKey(list.get(i).getNick())) == 0) {
+//                        adapter.addData(i, user);
+//                        return;
+//                    }
                 }
                 adapter.addData(user);
             }
@@ -247,10 +246,10 @@ public class FriendsFragment extends AppBaseFragment<List<UserEntity>, FriendsPr
         int size = adapter.getData().size();
         for (int i = 0; i < size; i++) {
             UserEntity bean = adapter.getData(i);
-            if (AppUtil.getSortedKey(bean.getName()).equals(s)) {
-                manager.scrollToPositionWithOffset(i, 0);
-                break;
-            }
+//            if (AppUtil.getSortedKey(bean.getName()).equals(s)) {
+//                manager.scrollToPositionWithOffset(i, 0);
+//                break;
+//            }
         }
     }
 

@@ -12,7 +12,7 @@ import cn.bmob.v3.datatype.BmobRelation;
  * 创建时间:    2016/9/11      17:08
  * QQ:             1981367757
  */
-public class User extends BmobUser implements Comparable<User> {
+public class User extends BmobUser  {
         private static final long serialVersionUID = 1L;
         /**
          * 地址
@@ -251,10 +251,10 @@ public class User extends BmobUser implements Comparable<User> {
                 this.sex = sex;
         }
 
-        @Override
-        public int compareTo(User another) {
-                return AppUtil.getSortedKey(getName()).compareTo(AppUtil.getSortedKey(another.getName()));
-        }
+//        @Override
+//        public int compareTo(User another) {
+//                return AppUtil.getSortedKey(getName()).compareTo(AppUtil.getSortedKey(another.getName()));
+//        }
 
 
         @Override
