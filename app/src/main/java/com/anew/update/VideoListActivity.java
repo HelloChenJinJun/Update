@@ -22,7 +22,7 @@ public class VideoListActivity extends SlideBaseActivity {
 
     @Override
     public boolean cancelAdapt() {
-        return false;
+        return true;
     }
 
     @Override

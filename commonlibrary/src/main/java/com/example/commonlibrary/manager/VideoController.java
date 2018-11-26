@@ -61,7 +61,8 @@ public abstract class VideoController extends FrameLayout implements View.OnTouc
     public boolean onTouch(View v, MotionEvent event) {
         if (mIVideoPlayer.getWindowState() != DefaultVideoPlayer.WINDOW_STATE_FULL
                 || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_FINISH
-                || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_ERROR) {
+                || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_ERROR
+                || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_IDLE) {
             return false;
         }
         int action = event.getAction();

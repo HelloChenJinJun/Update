@@ -113,8 +113,16 @@ public class DefaultVideoController extends VideoController implements View.OnCl
     private void initDefaultView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_video_control, this, true);
         setOnClickListener(v -> {
-            dealTop();
-            dealBottom();
+            if (mIVideoPlayer
+                    .getCurrentState() == DefaultVideoPlayer
+                    .PLAY_STATE_BUFFERING_PLAYING
+                    || mIVideoPlayer.getCurrentState()
+                    == DefaultVideoPlayer.PLAY_STATE_BUFFERING_PAUSE
+                    || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_PAUSE
+                    || mIVideoPlayer.getCurrentState() == DefaultVideoPlayer.PLAY_STATE_PLAYING) {
+                dealTop();
+                dealBottom();
+            }
         });
         bg = view.findViewById(R.id.iv_view_video_control_bg);
         timeDelta = view.findViewById(R.id.tv_view_video_control_time_delta);
