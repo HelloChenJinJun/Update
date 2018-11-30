@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.commonlibrary.BaseApplication;
 import com.example.commonlibrary.bean.chat.DaoMaster;
 import com.example.commonlibrary.bean.chat.DaoSession;
 import com.example.commonlibrary.imageloader.base.BaseImageLoaderStrategy;
@@ -13,6 +14,7 @@ import com.example.commonlibrary.interceptor.TokenInterceptor;
 import com.example.commonlibrary.manager.ActivityManager;
 import com.example.commonlibrary.mvp.model.DefaultModel;
 import com.example.commonlibrary.net.OkHttpGlobalHandler;
+import com.example.commonlibrary.net.okhttpconfig.SSLConfig;
 import com.example.commonlibrary.repository.DefaultRepositoryManager;
 import com.example.commonlibrary.utils.Constant;
 import com.example.commonlibrary.utils.FileUtil;
@@ -22,9 +24,11 @@ import com.google.gson.GsonBuilder;
 import org.greenrobot.greendao.database.Database;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
+import javax.net.ssl.X509TrustManager;
 
 import androidx.annotation.Nullable;
 import dagger.Module;
@@ -95,8 +99,7 @@ public class GlobalConfigModule {
 
             @Override
             public Request onRequestBefore(Interceptor.Chain chain, Request request) {
-                return request.newBuilder()
-                        .url(request.url()).build();
+                return request;
             }
         };
     }
@@ -108,6 +111,8 @@ public class GlobalConfigModule {
             , TokenInterceptor tokenInterceptor) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(10, TimeUnit.SECONDS).readTimeout(10, TimeUnit.SECONDS);
+        //        自定义签名证书
+        //        builder.sslSocketFactory(SSLConfig.getSSLSocketFactory(BaseApplication.getInstance()), (X509TrustManager) Objects.requireNonNull(SSLConfig.getTrustManager(BaseApplication.getInstance())));
         if (tokenInterceptor != null) {
             builder.addNetworkInterceptor(tokenInterceptor);
         }
@@ -156,6 +161,7 @@ public class GlobalConfigModule {
     @Provides
     public Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+
         gsonBuilder.serializeNulls().enableComplexMapKeySerialization();
         return gsonBuilder.create();
     }

@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 /**
  * 项目名称:    Update
@@ -122,11 +123,15 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
 
     @Override
     public void start() {
+        ListVideoManager.getInstance().setCurrentPlayer(this);
+        if (((DefaultVideoController) mVideoController).getOnItemClickListener() != null
+                && !((DefaultVideoController) mVideoController).getOnItemClickListener().onStartClick(null, url)) {
+            return;
+        }
         if (getCurrentState() == PLAY_STATE_IDLE) {
             initMediaPlayer();
             initAudioManager();
             initTextureView();
-            ListVideoManager.getInstance().setCurrentPlayer(this);
         } else if (getCurrentState() == PLAY_STATE_PAUSE) {
             mState = PLAY_STATE_PLAYING;
             innerStart(mMediaPlayer.getCurrentPosition());
@@ -140,6 +145,7 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
 
         }
     }
+
 
     private void initTextureView() {
         if (defaultTextureView != null) {
@@ -336,6 +342,16 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
     }
 
     @Override
+    public VideoController getController() {
+        return mVideoController;
+    }
+
+    @Override
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         //        防止屏幕切换时，重新创建textureView
         if (mSurfaceTexture == null) {
@@ -344,6 +360,7 @@ public class DefaultVideoPlayer extends FrameLayout implements IVideoPlayer, Tex
             prepareAsync();
         } else {
             defaultTextureView.setSurfaceTexture(mSurfaceTexture);
+
         }
     }
 

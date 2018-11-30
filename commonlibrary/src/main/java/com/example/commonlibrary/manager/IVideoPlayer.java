@@ -54,4 +54,7 @@ public interface IVideoPlayer {
     IVideoPlayer setImageCover(String imageUrl);
 
 
+    VideoController getController();
+
+    String getUrl();
 }

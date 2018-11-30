@@ -9,7 +9,6 @@ package com.example.chat.manager;
 
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 
 import com.example.chat.base.Constant;
 import com.example.chat.bean.ChatMessage;
@@ -30,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;

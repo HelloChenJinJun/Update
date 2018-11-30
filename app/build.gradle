@@ -6,6 +6,7 @@ android {
         targetCompatibility 1.8
     }
     android {
+        useLibrary 'org.apache.http.legacy'
         lintOptions {
             checkReleaseBuilds false
             // Or, if you prefer, you can continue to check for errors in release builds,
@@ -87,26 +88,32 @@ dependencies {
     implementation project(':commonlibrary')
     annotationProcessor rootProject.ext.dependencies.dagger2_compiler
     testImplementation 'junit:junit:4.12'
-
+    implementation 'cn.bmob.android:bmob-sdk:3.6.8-rc3'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //七牛
     implementation 'com.qiniu:qiniu-android-sdk:7.3.13'
-
-    //MQTT
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-
-
-
-    implementation 'com.zhihu.android:matisse:0.5.2-beta3'
-    implementation ('com.contrarywind:Android-PickerView:4.1.6'){
+    implementation('com.contrarywind:Android-PickerView:4.1.6') {
         exclude group: 'com.android.support'
     }
+    implementation('com.zzhoujay.richtext:richtext:3.0.7') {
+        exclude module: "appcompat-v7"
+        exclude module: "support-v4"
+        exclude module: "com.squareup.okio"
+        exclude module: "com.squareup.okhttp"
+        exclude module: "com.github.bumptech.glide"
+    }
+    // photoview
+    implementation('com.github.chrisbanes.photoview:library:1.2.4') {
+        exclude module: "appcompat-v7"
+        exclude module: "support-v4"
+    }
+    implementation('com.flyco.labelview:FlycoLabelView_Lib:1.0.2@aar') {
+        exclude module: "appcompat-v7"
+        exclude module: "support-v4"
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-
-
+    }
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/js.jar')
 }
 
 
@@ -117,13 +124,20 @@ configurations.all {
             if (!requested.name.startsWith("multidex")) {
                 //这里写你想统一的版本是多少，前提是你sdk里有
                 details.useVersion '25.4.0'
-            }else{
+            } else {
                 details.useVersion '1.0.2'
             }
         }
+
+        if (requested.group == 'com.squareup.okio') {
+            if (requested.name.startsWith('okio')) {
+
+            }
+        }
+
     }
 }
-apply from: 'tinker-support.gradle'
+//apply from: 'tinker-support.gradle'
 apply from: 'multiple-channel.gradle'
 
 

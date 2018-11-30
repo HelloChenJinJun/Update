@@ -13,97 +13,98 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/custom_color_app_content_div"/>
+        android:background="@color/custom_color_app_content_div" />
+
     <RadioGroup
-        android:tag="skin"
-        android:background="@color/custom_color_app_title_bg"
         android:id="@+id/rg_activity_main_bottom_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/custom_color_app_title_bg"
         android:checkedButton="@+id/rb_activity_main_bottom_index"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:tag="skin">
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:paddingTop="5dp"
-            android:paddingBottom="3dp"
-            android:textSize="7sp"
-            android:drawablePadding="3dp"
-            android:tag="skin"
             android:id="@+id/rb_activity_main_bottom_index"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/ic_main_one"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:text="首页"
-            />
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:tag="skin"
             android:paddingTop="5dp"
             android:paddingBottom="3dp"
-            android:textSize="7sp"
-            android:drawablePadding="3dp"
-            android:id="@+id/rb_activity_main_bottom_classify"
+            android:tag="skin"
+            android:text="首页"
+            android:textSize="7sp" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_activity_main_bottom_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/ic_main_two"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:text="分类"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="3dp"
+            android:tag="skin"
+            android:text="分类"
+            android:textSize="7sp" />
 
 
         <ImageView
-            android:layout_marginRight="7.5dp"
-            android:layout_marginLeft="7.5dp"
-            android:visibility="gone"
-            android:scaleType="fitXY"
             android:id="@+id/iv_activity_main_vip_selected"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            />
+            android:layout_marginLeft="7.5dp"
+            android:layout_marginRight="7.5dp"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:tag="skin"
-            android:paddingBottom="3dp"
-            android:textSize="7sp"
-            android:drawablePadding="2dp"
             android:id="@+id/rb_activity_main_bottom_vip"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawablePadding="2dp"
             android:gravity="center"
-            android:text="会员"/>
+            android:paddingBottom="3dp"
+            android:tag="skin"
+            android:text="会员"
+            android:textSize="7sp" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:tag="skin"
-            android:paddingTop="5dp"
-            android:paddingBottom="3dp"
-            android:textSize="7sp"
-            android:drawablePadding="3dp"
             android:id="@+id/rb_activity_main_bottom_gift"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:text="福利"/>
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:tag="skin"
             android:paddingTop="5dp"
             android:paddingBottom="3dp"
-            android:textSize="7sp"
-            android:drawablePadding="3dp"
+            android:tag="skin"
+            android:text="福利"
+            android:textSize="7sp" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_activity_main_bottom_person"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:text="我的"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="3dp"
+            android:tag="skin"
+            android:text="我的"
+            android:textSize="7sp" />
 
 
     </RadioGroup>

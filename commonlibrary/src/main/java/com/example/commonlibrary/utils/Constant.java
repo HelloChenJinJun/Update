@@ -22,6 +22,8 @@ public class Constant {
     public static final String DESIGNED_HEIGHT = "designed_height";
     public static final String UM_KEY = "5bbf0ba6f1f5568e9d000011";
     public static final String WALLPAPER = "wallpaper";
+    public static final String DATA = "data";
+    public static final String TITLE = "title";
     private static final String BASE_CACHE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "common" + File.separator;
     /**
      * 声音的缓存目录

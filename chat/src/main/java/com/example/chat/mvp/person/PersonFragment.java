@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.chat.R;
@@ -30,13 +31,11 @@ import com.example.commonlibrary.cusotomview.RoundAngleImageView;
 import com.example.commonlibrary.utils.CommonLogger;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-import io.reactivex.functions.Consumer;
 
 
 /**
@@ -81,25 +80,25 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
 
     @Override
     protected void initView() {
-        signature = (TextView) findViewById(R.id.tv_fragment_person_signature);
-        avatar = (RoundAngleImageView) findViewById(R.id.riv_fragment_person_avatar);
-        titleBg = (RelativeLayout) findViewById(R.id.rl_fragment_person_title_bg);
-        RelativeLayout settings = (RelativeLayout) findViewById(R.id.rl_fragment_person_settings);
-        RelativeLayout edit = (RelativeLayout) findViewById(R.id.rl_fragment_person_edit);
-        RelativeLayout index = (RelativeLayout) findViewById(R.id.rl_fragment_person_index);
-        RelativeLayout notify = (RelativeLayout) findViewById(R.id.rl_fragment_person_notify);
-        systemCount= (TextView) findViewById(R.id.tv_fragment_person_system_notify_count);
+        signature = findViewById(R.id.tv_fragment_person_signature);
+        avatar = findViewById(R.id.riv_fragment_person_avatar);
+        titleBg = findViewById(R.id.rl_fragment_person_title_bg);
+        RelativeLayout settings = findViewById(R.id.rl_fragment_person_settings);
+        RelativeLayout edit = findViewById(R.id.rl_fragment_person_edit);
+        RelativeLayout index = findViewById(R.id.rl_fragment_person_index);
+        RelativeLayout notify = findViewById(R.id.rl_fragment_person_notify);
+        systemCount = findViewById(R.id.tv_fragment_person_system_notify_count);
         findViewById(R.id.rl_fragment_person_comment).setOnClickListener(this);
         settings.setOnClickListener(this);
         edit.setOnClickListener(this);
         index.setOnClickListener(this);
         notify.setOnClickListener(this);
         titleBg.setOnLongClickListener(v -> {
-            PhotoSelectActivity.start(this, Constant.TITLE_WALLPAPER,true,false,null);
+            PhotoSelectActivity.start(this, Constant.TITLE_WALLPAPER, true, false, null);
             return true;
         });
         avatar.setOnLongClickListener(v -> {
-            PhotoSelectActivity.start(this,Constant.AVATAR,true,false,null);
+            PhotoSelectActivity.start(this, Constant.AVATAR, true, false, null);
             return true;
         });
     }
@@ -111,16 +110,16 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
                 .build().inject(this);
         presenter.registerEvent(UnReadSystemNotifyEvent.class, unReadSystemNotifyEvent -> updateSystemNotifyCount());
         presenter.registerEvent(User.class, user -> {
-            PersonFragment.this.user=user;
+            PersonFragment.this.user = user;
             updateUserInfo();
         });
-        user= UserManager.getInstance().getCurrentUser();
+        user = UserManager.getInstance().getCurrentUser();
     }
 
     private void updateUserInfo() {
         if (getContext() != null) {
-            Glide.with(getContext()).load(user.getAvatar()).placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher).into(this.avatar);
+            RequestOptions requestOptions = RequestOptions.placeholderOf(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher);
+            Glide.with(getContext()).load(user.getAvatar()).apply(requestOptions).into(this.avatar);
             signature.setText(user.getSignature());
             Glide.with(getContext()).load(user.getTitleWallPaper()).into(new SimpleTarget<Drawable>() {
                 @Override
@@ -134,15 +133,15 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
     @Override
     protected void updateView() {
         updateUserInfo();
-       updateSystemNotifyCount();
+        updateSystemNotifyCount();
     }
 
     private void updateSystemNotifyCount() {
-        long count=UserDBManager.getInstance().getUnReadSystemNotifyCount();
+        long count = UserDBManager.getInstance().getUnReadSystemNotifyCount();
         if (count > 0) {
             systemCount.setVisibility(View.VISIBLE);
-            systemCount.setText(count+"");
-        }else {
+            systemCount.setText(count + "");
+        } else {
             systemCount.setVisibility(View.GONE);
         }
     }
@@ -157,13 +156,13 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
         if (id == R.id.rl_fragment_person_settings) {
             SettingsActivity.start(getActivity());
         } else if (id == R.id.rl_fragment_person_edit) {
-            EditUserInfoActivity.start(getActivity(),UserManager.getInstance().getCurrentUserObjectId());
+            EditUserInfoActivity.start(getActivity(), UserManager.getInstance().getCurrentUserObjectId());
         } else if (id == R.id.rl_fragment_person_index) {
-            UserDetailActivity.start(getActivity(),UserManager.getInstance().getCurrentUserObjectId());
+            UserDetailActivity.start(getActivity(), UserManager.getInstance().getCurrentUserObjectId());
         } else if (id == R.id.rl_fragment_person_notify) {
             SystemNotifyActivity.start(getActivity());
-        }else if (id==R.id.rl_fragment_person_comment){
-            CommentNotifyActivity.start(getActivity(),null);
+        } else if (id == R.id.rl_fragment_person_comment) {
+            CommentNotifyActivity.start(getActivity(), null);
         }
     }
 
@@ -171,10 +170,10 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode){
+            switch (requestCode) {
                 case ConstantUtil.REQUEST_CODE_ONE_PHOTO:
-                    String path=data.getStringExtra(ConstantUtil.PATH);
-                    String from=data.getStringExtra(Constant.FROM);
+                    String path = data.getStringExtra(ConstantUtil.PATH);
+                    String from = data.getStringExtra(Constant.FROM);
                     showLoadDialog("正在上传图片中，请稍候........");
                     // todo path is not absolute
                     BmobFile bmobFile = new BmobFile(new File(path));
@@ -195,7 +194,7 @@ public class PersonFragment extends AppBaseFragment<Object, PersonPresenter> imp
                                                         titleBg.setBackground(resource);
                                                     }
                                                 });
-                                            }else {
+                                            } else {
                                                 Glide.with(PersonFragment.this).load(bmobFile.getFileUrl())
                                                         .into(avatar);
                                             }

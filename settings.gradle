@@ -1,1 +1,1 @@
-include ':app', ':chat',':commonlibrary'
+include ':app',':commonlibrary'

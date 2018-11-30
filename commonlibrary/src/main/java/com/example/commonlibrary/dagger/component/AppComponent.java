@@ -22,16 +22,25 @@ import retrofit2.Retrofit;
  */
 
 @Singleton
-@Component(modules =GlobalConfigModule.class)
+@Component(modules = GlobalConfigModule.class)
 public interface AppComponent {
     public ImageLoader getImageLoader();
+
     public Gson getGson();
+
     public File getCacheFile();
+
     public OkHttpClient getOkHttpClient();
+
     public ActivityManager getActivityManager();
+
     public DaoSession getDaoSession();
+
     public OkHttpClient.Builder getOkHttpClientBuilder();
+
     public Retrofit getRetrofit();
+
     public SharedPreferences getSharedPreferences();
+
     public Retrofit.Builder getRetrofitBuilder();
 }

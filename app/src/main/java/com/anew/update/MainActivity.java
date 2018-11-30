@@ -7,7 +7,10 @@ import android.view.MenuInflater;
 import android.widget.RadioGroup;
 
 
+import com.anew.update.mvp.index.IndexFragment;
+import com.anew.update.mvp.video.VideoFragment;
 import com.example.commonlibrary.SlideBaseActivity;
+import com.example.commonlibrary.manager.ListVideoManager;
 import com.example.commonlibrary.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -27,6 +30,11 @@ public class MainActivity extends SlideBaseActivity {
     //        }
     //    }
 
+
+    @Override
+    public boolean cancelAdapt() {
+        return super.cancelAdapt();
+    }
 
     @Override
     protected boolean needStatusPadding() {
@@ -109,40 +117,40 @@ public class MainActivity extends SlideBaseActivity {
     @Override
     protected void initView() {
         RadioGroup bottomContainer = findViewById(R.id.rg_activity_main_bottom_container);
-        //        bottomContainer.setOnCheckedChangeListener((group, checkedId) -> {
-        //            if (checkedId == R.id.rb_activity_main_bottom_index) {
-        //                addOrReplaceFragment(fragmentList.get(0));
-        //            } else if (checkedId == R.id.rb_activity_main_bottom_center) {
-        //                addOrReplaceFragment(fragmentList.get(1));
-        //            } else if (checkedId == R.id.rb_activity_main_bottom_person) {
-        //                addOrReplaceFragment(fragmentList.get(2));
-        //            } else if (checkedId == R.id.rb_activity_main_bottom_chat) {
-        //                addOrReplaceFragment(fragmentList.get(3));
-        //            } else if (checkedId == R.id.rb_activity_main_bottom_public) {
-        //                addOrReplaceFragment(fragmentList.get(4));
-        //            }
-        //        });
+        bottomContainer.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_activity_main_bottom_index) {
+                addOrReplaceFragment(fragmentList.get(0));
+            } else if (checkedId == R.id.rb_activity_main_bottom_video) {
+                addOrReplaceFragment(fragmentList.get(1));
+            } else if (checkedId == R.id.rb_activity_main_bottom_person) {
+                //                addOrReplaceFragment(fragmentList.get(2));
+            }
+        });
     }
 
     @Override
     protected void initData() {
         fragmentList = new ArrayList<>();
-        //        fragmentList.add(PersonFragment.newInstance());
+        fragmentList.add(IndexFragment.newInstance());
+        fragmentList.add(VideoFragment.newInstance());
         //        fragmentList.add(HomeFragment.newInstance());
         //        fragmentList.add(ShareInfoFragment.newInstance(UserManager
         //                .getInstance().getCurrentUserObjectId(), true));
-        //        addOrReplaceFragment(fragmentList.get(3), R.id.fl_activity_main_container);
+        addOrReplaceFragment(fragmentList.get(0), R.id.fl_activity_main_container);
     }
 
     private long mExitTime = 0;
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() - mExitTime > 2000) {
-            ToastUtils.showShortToast("再按一次退出程序");
-            mExitTime = System.currentTimeMillis();
-        } else {
-            super.onBackPressed();
+
+        if (!ListVideoManager.getInstance().onBackPressed()) {
+            if (System.currentTimeMillis() - mExitTime > 2000) {
+                ToastUtils.showShortToast("再按一次退出程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -150,5 +158,6 @@ public class MainActivity extends SlideBaseActivity {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
     }
+
 
 }

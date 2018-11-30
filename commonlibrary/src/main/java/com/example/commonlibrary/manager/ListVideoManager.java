@@ -1,5 +1,7 @@
 package com.example.commonlibrary.manager;
 
+import com.umeng.commonsdk.debug.I;
+
 /**
  * 项目名称:    Update
  * 创建人:      陈锦军
@@ -42,6 +44,22 @@ public class ListVideoManager {
 
 
     public void release() {
+        currentPlayer.release();
         currentPlayer = null;
+    }
+
+    public void error() {
+        if (currentPlayer != null) {
+            currentPlayer.getController().onPlayStateChanged(DefaultVideoPlayer.PLAY_STATE_ERROR);
+        }
+    }
+
+    public void updateUrl(String url) {
+        currentPlayer.setUp(url, null);
+        currentPlayer.start();
+    }
+
+    public IVideoPlayer getCurrentPlayer() {
+        return currentPlayer;
     }
 }

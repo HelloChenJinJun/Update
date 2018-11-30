@@ -16,13 +16,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.commonlibrary.BaseApplication;
 import com.example.commonlibrary.R;
 import com.example.commonlibrary.baseadapter.SuperRecyclerView;
 import com.example.commonlibrary.baseadapter.adapter.BaseRecyclerAdapter;
 import com.example.commonlibrary.baseadapter.listener.OnSimpleItemClickListener;
+import com.example.commonlibrary.baseadapter.manager.WrappedLinearLayoutManager;
 import com.example.commonlibrary.baseadapter.viewholder.BaseWrappedViewHolder;
+import com.example.commonlibrary.cusotomview.ListViewDecoration;
 import com.example.commonlibrary.utils.AppUtil;
 import com.example.commonlibrary.utils.CommonLogger;
+import com.example.commonlibrary.utils.DensityUtil;
 import com.example.commonlibrary.utils.TimeUtil;
 import com.example.commonlibrary.utils.ToastUtils;
 
@@ -60,13 +64,14 @@ public class DefaultVideoController extends VideoController implements View.OnCl
     private TextView retry;
     private ProgressBar brightProgress, volumeProgress, positionProgress;
     private SeekBar bottomSeek;
-    private ImageView middlePlay;
+    private RelativeLayout middlePlay;
     private Disposable disposable, batteryDisposable;
     private RelativeLayout clarityContainer;
     private SuperRecyclerView clarityDisplay;
     private BroadcastReceiver batteryBroadcastReceiver;
     private ImageView bg;
     private ImageView back;
+    private ClarityAdapter clarityAdapter;
 
     public DefaultVideoController(@NonNull Context context) {
         super(context);
@@ -152,10 +157,12 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         volumeProgress = view.findViewById(R.id.pb_view_video_control_volume);
         positionProgress = view.findViewById(R.id.pb_view_video_control_position_progress);
         bottomSeek = view.findViewById(R.id.sb_view_video_control_bottom_seek);
-        middlePlay = view.findViewById(R.id.iv_view_video_control_middle_play);
+        middlePlay = view.findViewById(R.id.rl_view_video_control_middle_play);
         bottomPlay = view.findViewById(R.id.iv_view_video_control_bottom_play);
         clarityContainer = view.findViewById(R.id.rl_view_video_control_clarity_container);
         clarityDisplay = view.findViewById(R.id.srcv_view_video_control_clarity);
+        clarityDisplay.setLayoutManager(new WrappedLinearLayoutManager(getContext()));
+        clarityDisplay.addItemDecoration(new ListViewDecoration(DensityUtil.toDp(5)));
         back.setOnClickListener(this);
         screen.setOnClickListener(this);
         retry.setOnClickListener(this);
@@ -265,6 +272,8 @@ public class DefaultVideoController extends VideoController implements View.OnCl
                 bottomPlay.setImageResource(R.drawable.ic_player_pause);
                 bottomContainer.setVisibility(VISIBLE);
                 topContainer.setVisibility(VISIBLE);
+                endTime.setText(TimeUtil.formatTime(mIVideoPlayer.getDuration()));
+                endTimeRight.setText(TimeUtil.formatTime(mIVideoPlayer.getDuration()));
                 break;
             case DefaultVideoPlayer.PLAY_STATE_BUFFERING_PAUSE:
                 bottomPlay.setImageResource(R.drawable.ic_player_start);
@@ -278,9 +287,11 @@ public class DefaultVideoController extends VideoController implements View.OnCl
                 finishContainer.setVisibility(VISIBLE);
                 bottomContainer.setVisibility(GONE);
                 topContainer.setVisibility(GONE);
+                middlePlay.setVisibility(GONE);
                 break;
             case DefaultVideoPlayer.PLAY_STATE_ERROR:
                 errorContainer.setVisibility(VISIBLE);
+                middlePlay.setVisibility(GONE);
                 break;
         }
     }
@@ -335,6 +346,14 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             endTimeRight.setVisibility(GONE);
             clarity.setVisibility(GONE);
             back.setVisibility(GONE);
+            if (clarityAdapter != null) {
+                for (Clarity item : clarityAdapter.getData()
+                        ) {
+                    if (item.getVideoUrl().equals(mIVideoPlayer.getUrl())) {
+                        clarity.setText(item.getGrade());
+                    }
+                }
+            }
             cancelBatteryTime();
             bottomIn();
             topIn();
@@ -435,7 +454,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
 
     @Override
     public void setClarity(List<Clarity> urlList) {
-        ClarityAdapter clarityAdapter = new ClarityAdapter();
+        clarityAdapter = new ClarityAdapter();
         clarityDisplay.setAdapter(clarityAdapter);
         clarityAdapter.refreshData(urlList);
         clarityAdapter.setOnItemClickListener(new OnSimpleItemClickListener() {
@@ -444,7 +463,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
                 clarityContainer.setVisibility(GONE);
                 Clarity clarity = clarityAdapter.getData(position);
                 mIVideoPlayer.setUp(clarity.getVideoUrl(), clarity.getHeaders());
-                mIVideoPlayer.reset();
+                mIVideoPlayer.release();
                 mIVideoPlayer.start();
             }
         });
@@ -469,7 +488,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             } else if (mIVideoPlayer.getWindowState() == DefaultVideoPlayer.WINDOW_STATE_LIST) {
                 mIVideoPlayer.setWindowState(DefaultVideoPlayer.WINDOW_STATE_FULL);
             }
-        } else if (id == R.id.iv_view_video_control_middle_play) {
+        } else if (id == R.id.rl_view_video_control_middle_play) {
             mIVideoPlayer.start();
         } else if (id == R.id.iv_view_video_control_bottom_play) {
             if (mIVideoPlayer.getCurrentState() == DefaultVideoPlayer
@@ -482,6 +501,7 @@ public class DefaultVideoController extends VideoController implements View.OnCl
             }
         } else if (id == R.id.tv_view_video_control_bottom_clarity) {
             clarityContainer.setVisibility(VISIBLE);
+            clarityAdapter.notifyDataSetChanged();
         } else if (id == R.id.ll_view_video_control_restart) {
             finishContainer.setVisibility(GONE);
             mIVideoPlayer.start();
@@ -499,6 +519,22 @@ public class DefaultVideoController extends VideoController implements View.OnCl
     }
 
 
+    public interface OnItemClickListener {
+        boolean onStartClick(View view, String url);
+    }
+
+
+    private OnItemClickListener mOnItemClickListener;
+
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
     private class ClarityAdapter extends BaseRecyclerAdapter<Clarity, BaseWrappedViewHolder> {
 
         @Override
@@ -510,6 +546,12 @@ public class DefaultVideoController extends VideoController implements View.OnCl
         protected void convert(BaseWrappedViewHolder holder, Clarity data) {
             holder.setText(R.id.tv_item_view_video_control_clarity_content
                     , getContent(data)).setOnItemClickListener();
+
+            if (data.getVideoUrl().equals(mIVideoPlayer.getUrl())) {
+                holder.getView(R.id.tv_item_view_video_control_clarity_content).setSelected(true);
+            } else {
+                holder.getView(R.id.tv_item_view_video_control_clarity_content).setSelected(false);
+            }
         }
 
         private CharSequence getContent(Clarity data) {

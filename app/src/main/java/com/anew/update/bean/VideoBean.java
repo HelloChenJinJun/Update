@@ -1,9 +1,11 @@
-package com.anew.update;
+package com.anew.update.bean;
 
 import com.example.commonlibrary.manager.VideoController;
 
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 /**
  * 项目名称:    Update
@@ -23,6 +25,13 @@ public class VideoBean {
         this.imageCover = imageCover;
         this.url = url;
         this.totalLength = totalLength;
+    }
+
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj instanceof VideoBean &&
+                ((VideoBean) obj).getUrl().equals(getUrl());
     }
 
     public long getTotalLength() {

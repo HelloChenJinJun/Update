@@ -12,4 +12,8 @@ public class VideoManager {
 
         return instance;
     }
+
+    public void error() {
+
+    }
 }
