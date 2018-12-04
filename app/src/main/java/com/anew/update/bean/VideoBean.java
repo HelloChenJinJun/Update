@@ -1,6 +1,6 @@
 package com.anew.update.bean;
 
-import com.example.commonlibrary.manager.VideoController;
+import com.example.commonlibrary.manager.video.VideoController;
 
 import java.util.List;
 import java.util.Map;

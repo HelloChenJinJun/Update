@@ -1,4 +1,4 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -16,9 +16,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.example.commonlibrary.BaseApplication;
+import com.example.commonlibrary.manager.IVideoPlayer;
 import com.example.commonlibrary.utils.AppUtil;
 import com.example.commonlibrary.utils.CommonLogger;
-import com.example.commonlibrary.utils.Constant;
 import com.example.commonlibrary.utils.DensityUtil;
 
 import java.io.IOException;
@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 
 /**
  * 项目名称:    Update

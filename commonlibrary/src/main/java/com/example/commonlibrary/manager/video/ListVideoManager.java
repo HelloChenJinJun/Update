@@ -1,6 +1,6 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
-import com.umeng.commonsdk.debug.I;
+import com.example.commonlibrary.manager.IVideoPlayer;
 
 /**
  * 项目名称:    Update

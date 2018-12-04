@@ -1,4 +1,4 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
@@ -16,7 +16,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.commonlibrary.BaseApplication;
 import com.example.commonlibrary.R;
 import com.example.commonlibrary.baseadapter.SuperRecyclerView;
 import com.example.commonlibrary.baseadapter.adapter.BaseRecyclerAdapter;

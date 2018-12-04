@@ -1,15 +1,14 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 
-import com.example.commonlibrary.utils.CommonLogger;
+import com.example.commonlibrary.manager.IVideoPlayer;
 
 import java.util.List;
 import java.util.Map;

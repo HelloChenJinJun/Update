@@ -5,10 +5,10 @@ import com.anew.update.bean.VideoBean;
 import com.anew.update.bean.VideoDetailBean;
 import com.example.commonlibrary.baseadapter.adapter.BaseRecyclerAdapter;
 import com.example.commonlibrary.baseadapter.viewholder.BaseWrappedViewHolder;
-import com.example.commonlibrary.manager.DefaultVideoController;
-import com.example.commonlibrary.manager.DefaultVideoPlayer;
-import com.example.commonlibrary.manager.ListVideoManager;
-import com.example.commonlibrary.manager.VideoController;
+import com.example.commonlibrary.manager.video.DefaultVideoController;
+import com.example.commonlibrary.manager.video.DefaultVideoPlayer;
+import com.example.commonlibrary.manager.video.ListVideoManager;
+import com.example.commonlibrary.manager.video.VideoController;
 import com.example.commonlibrary.rxbus.RxBusManager;
 
 import java.util.ArrayList;

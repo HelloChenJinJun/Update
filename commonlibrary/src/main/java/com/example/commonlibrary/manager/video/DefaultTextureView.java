@@ -1,4 +1,4 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
 import android.content.Context;
 import android.view.TextureView;

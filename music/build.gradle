@@ -1,0 +1,113 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    android {
+        lintOptions {
+            checkReleaseBuilds false
+            // Or, if you prefer, you can continue to check for errors in release builds,
+            // but continue the build even when errors are found:
+            abortOnError false
+        }
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        applicationId "com.new.music"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'//, 'x86_64', 'arm64-v8a'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("yitai.jks")
+            storePassword "yitaizhuawawa2017"
+            keyAlias "key0"
+            keyPassword "yitaizhuawawa2017"
+        }
+        release {
+            storeFile file("yitai.jks")
+            storePassword "yitaizhuawawa2017"
+            keyAlias "key0"
+            keyPassword "yitaizhuawawa2017"
+        }
+    }
+    buildTypes {
+        debug {
+            shrinkResources false   // 移除无用的resource文件
+            minifyEnabled false //不启用混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources false   // 移除无用的resource文件
+            minifyEnabled false //不启用混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    if (!rootProject.ext.isAlone) {
+//        api project(':chat')
+//        api project(':music')
+//        api project(':news')
+//        api project(':live')
+
+    }
+    implementation project(':commonlibrary')
+    annotationProcessor rootProject.ext.dependencies.dagger2_compiler
+    testImplementation 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/js.jar')
+}
+
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                //这里写你想统一的版本是多少，前提是你sdk里有
+                details.useVersion '25.4.0'
+            } else {
+                details.useVersion '1.0.2'
+            }
+        }
+
+
+    }
+}
+//apply from: 'tinker-support.gradle'
+apply from: 'multiple-channel.gradle'
+
+

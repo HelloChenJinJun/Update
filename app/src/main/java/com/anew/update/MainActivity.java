@@ -10,7 +10,7 @@ import android.widget.RadioGroup;
 import com.anew.update.mvp.index.IndexFragment;
 import com.anew.update.mvp.video.VideoFragment;
 import com.example.commonlibrary.SlideBaseActivity;
-import com.example.commonlibrary.manager.ListVideoManager;
+import com.example.commonlibrary.manager.video.ListVideoManager;
 import com.example.commonlibrary.utils.ToastUtils;
 
 import java.util.ArrayList;

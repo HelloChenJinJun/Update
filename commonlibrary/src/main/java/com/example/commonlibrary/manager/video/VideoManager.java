@@ -1,4 +1,4 @@
-package com.example.commonlibrary.manager;
+package com.example.commonlibrary.manager.video;
 
 /**
  * 项目名称:    Update
